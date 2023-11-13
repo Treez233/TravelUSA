@@ -7,30 +7,14 @@ class Game {
         createAdj()
     }
     private fun createAdj(){
-        val dataset = listOf(
-            "AL FL GA TN MS", "AZ NM UT NV CA", "AR LA MS TN MO OK TX",
-            "CA AZ NV OR", "CO NM OK KS NE WY UT", "CT RI MA NY",
-            "DE NJ PA MD", "DC MD VA", "FL GA AL", "GA SC NC TN AL FL",
-            "ID WA OR NV UT WY MT", "IL WI IA MO KY IN",
-            "IN IL KY OH MI", "IA MN SD NE MO IL WI", "KS OK MO NE CO",
-            "KY TN VA WV OH IN IL MO", "LA MS AR TX", "ME NH", "MD DE PA WV VA DC",
-            "MA NH VT NY CT RI", "MI WI IN OH KY", "MN ND SD IA WI",
-            "MS AL TN AR LA", "MO AR TN KY IL IA NE KS OK", "MT ID WY SD ND",
-            "NE KS MO IA SD WY CO", "NV AZ UT ID OR CA", "NH VT MA ME",
-            "NJ NY PA DE", "NM TX OK CO AZ", "NY PA NJ CT MA VT",
-            "NC VA TN GA SC", "ND MT SD MN", "OH MI IN KY WV PA",
-            "OK TX AR MO KS CO NM", "OR CA NV ID WA", "PA OH WV MD DE NJ NY",
-            "RI MA CT", "SC NC GA", "SD NE IA MN ND MT WY", "TN AL GA NC VA KY MO AR MS",
-            "TX LA AR OK NM", "UT AZ CO WY ID NV", "VT NY MA NH", "VA MD DC WV KY TN NC", "WA OR ID", "WV VA MD PA OH KY",
-            "WI MN IA IL MI", "WY CO NE SD MT ID UT"
-        )
+
         val states = mutableListOf<String>()
-        for (str in dataset){
+        for (str in DATASET){
             val first = str.split(" ")
             states.add(first[0])
         }
         println(states)
-        val map = dataset.associate { entry -> val split = entry.split(" ")
+        val map = DATASET.associate { entry -> val split = entry.split(" ")
         split.first() to split.drop(1)}
 
         println(map)
@@ -138,5 +122,24 @@ class Game {
         }
 
         return shortestRoutes
+    }
+    companion object{
+        val DATASET = listOf(
+            "AL FL GA TN MS", "AZ NM UT NV CA", "AR LA MS TN MO OK TX",
+            "CA AZ NV OR", "CO NM OK KS NE WY UT", "CT RI MA NY",
+            "DE NJ PA MD", "DC MD VA", "FL GA AL", "GA SC NC TN AL FL",
+            "ID WA OR NV UT WY MT", "IL WI IA MO KY IN",
+            "IN IL KY OH MI", "IA MN SD NE MO IL WI", "KS OK MO NE CO",
+            "KY TN VA WV OH IN IL MO", "LA MS AR TX", "ME NH", "MD DE PA WV VA DC",
+            "MA NH VT NY CT RI", "MI WI IN OH KY", "MN ND SD IA WI",
+            "MS AL TN AR LA", "MO AR TN KY IL IA NE KS OK", "MT ID WY SD ND",
+            "NE KS MO IA SD WY CO", "NV AZ UT ID OR CA", "NH VT MA ME",
+            "NJ NY PA DE", "NM TX OK CO AZ", "NY PA NJ CT MA VT",
+            "NC VA TN GA SC", "ND MT SD MN", "OH MI IN KY WV PA",
+            "OK TX AR MO KS CO NM", "OR CA NV ID WA", "PA OH WV MD DE NJ NY",
+            "RI MA CT", "SC NC GA", "SD NE IA MN ND MT WY", "TN AL GA NC VA KY MO AR MS",
+            "TX LA AR OK NM", "UT AZ CO WY ID NV", "VT NY MA NH", "VA MD DC WV KY TN NC", "WA OR ID", "WV VA MD PA OH KY",
+            "WI MN IA IL MI", "WY CO NE SD MT ID UT"
+        )
     }
 }
