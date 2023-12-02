@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<transitionSet xmlns:android="http://schemas.android.com/apk/res/android">
+    <fade
+        android:duration="3000"
+        android:fadingMode="fade_in"
+        />
+    <slide
+        android:duration="3000"
+        android:slideEdge="top"
+        />
+</transitionSet>

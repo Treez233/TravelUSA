@@ -3,6 +3,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="bg">#FF2C2C2C</color>
+    <color name="green">#B2C770</color>
+    <color name="dull_green">#AEAE83</color>
     <color name="text">#FFF9D876</color>
     <color name="button_result">#FF98B66E</color>
 </resources>
