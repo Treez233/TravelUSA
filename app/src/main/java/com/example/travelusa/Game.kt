@@ -123,6 +123,9 @@ class Game {
 
         return shortestRoutes
     }
+    fun validate(input : String) : Boolean{
+        return false
+    }
     companion object{
         val DATASET = listOf(
             "AL FL GA TN MS", "AZ NM UT NV CA", "AR LA MS TN MO OK TX",

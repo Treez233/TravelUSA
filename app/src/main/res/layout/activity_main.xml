@@ -10,16 +10,44 @@
     <ImageView
         android:id="@+id/mapImageView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="350dp"
         app:srcCompat="@drawable/blank_us_map_48states" />
 
+        <EditText
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="5dp"
+            android:id="@+id/userInput"
+            android:hint="Enter State Name Here"
+            android:layout_below="@+id/mapImageView"
+            android:background="@drawable/textbox"
+
+        />
+
+
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="5dp"
+            android:layout_below="@+id/mapImageView"
+            android:layout_toRightOf="@+id/userInput"
+            android:id="@+id/confirm_button"
+            android:backgroundTint="@color/dull_green"
+            android:onClick="validateInput"
+            android:text="Confirm"
+            />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/path"/>
     <LinearLayout
         android:id="@+id/ad_view"
         android:orientation="horizontal"
         android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#FDDD" >
+        android:background="@color/white" >
     </LinearLayout>
 
 </RelativeLayout>
