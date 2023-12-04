@@ -1,29 +1,39 @@
 package com.example.travelusa
 
+import android.util.Log
 import java.util.LinkedList
+import kotlin.random.Random
 
 class Game {
+    private lateinit var startState : String
+    private lateinit var endState : String
+    private lateinit var states : MutableList<String>
+    private lateinit var adjacencyMatrix: Array<BooleanArray>
+    private lateinit var shortestRoutes : List<List<String>>
+    private var tries : Int = 10
+    private var progress = 0;
+    private var routeLen = 0;
     constructor(){
         createAdj()
+        generateTwoStates()
     }
     private fun createAdj(){
-
-        val states = mutableListOf<String>()
+        states = mutableListOf()
         for (str in DATASET){
             val first = str.split(" ")
             states.add(first[0])
         }
-        println(states)
+        //println(states)
         val map = DATASET.associate { entry -> val split = entry.split(" ")
         split.first() to split.drop(1)}
 
-        println(map)
+        //println(map)
 
         // Create a list of all unique vertices
         val vertices = states
 
         // Initialize an empty adjacency matrix
-        val adjacencyMatrix = Array(vertices.size) { BooleanArray(vertices.size) }
+        adjacencyMatrix = Array(vertices.size) { BooleanArray(vertices.size) }
 
         // Populate the adjacency matrix
         for ((vertex, neighbors) in map) {
@@ -35,21 +45,59 @@ class Game {
         }
 
         // Print the adjacency matrix
-        println("Adjacency Matrix:")
+        /*println("Adjacency Matrix:")
         for (i in vertices.indices) {
             for (j in vertices.indices) {
                 print(if (adjacencyMatrix[i][j]) "1 " else "0 ")
             }
             println()
-        }
-        val shortestRoutes = findAllShortestRoutes(adjacencyMatrix, states,"MD", "CA" )
+        }*/
+        val (startState, endState) = generateTwoStates()
+        this.startState = startState
+        this.endState = endState
+        shortestRoutes = findAllShortestRoutes(adjacencyMatrix, states, startState, endState)
+        routeLen = shortestRoutes[0].size
         println(shortestRoutes)
         if (shortestRoutes.isNotEmpty()) {
-            println("Shortest route from MD to CA:")
+            println("Shortest route from ${startState} to ${endState}:")
             println(shortestRoutes.joinToString(" -> "))
         } else {
-            println("No route found from MD to CA.")
+            println("No route found from ${startState} to ${endState}.")
         }
+    }
+    fun generateTwoStates() : Pair<String, String>{
+        var random = Random.Default
+        var randomS = random.nextInt(0,48)
+        var randomE = random.nextInt(0,48)
+        while (randomS == randomE)
+            randomE = random.nextInt(0,48)
+
+        /*val contiguousStates = listOf(
+            "Alabama", "Arizona", "Arkansas", "California", "Colorado", "Connecticut",
+            "Delaware", "Florida", "Georgia", "Idaho", "Illinois", "Indiana", "Iowa",
+            "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts",
+            "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska",
+            "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York",
+            "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon",
+            "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee",
+            "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"
+        )*/
+        val stateAbbreviations = arrayOf(
+            "AL", "AZ", "AR", "CA", "CO", "CT",
+            "DE", "FL", "GA", "ID", "IL", "IN", "IA",
+            "KS", "KY", "LA", "ME", "MD", "MA",
+            "MI", "MN", "MS", "MO", "MT", "NE",
+            "NV", "NH", "NJ", "NM", "NY",
+            "NC", "ND", "OH", "OK", "OR",
+            "PA", "RI", "SC", "SD", "TN",
+            "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"
+        )
+        // Mapping of states to numbers from 0 to 47
+        val indexToStateMap: Map<Int, String> = stateAbbreviations.withIndex().associate { it.index to it.value }
+        val stateName1 = indexToStateMap[randomS] ?: "State not found"
+        val stateName2 = indexToStateMap[randomE] ?: "State not found"
+        return Pair(stateName1, stateName2)
+
     }
     fun findAllShortestRoutes(
         adjacencyMatrix: Array<BooleanArray>,
@@ -123,8 +171,35 @@ class Game {
 
         return shortestRoutes
     }
+    fun getStart() : String{
+        return startState
+    }
+    fun getEnd() : String{
+        return endState
+    }
     fun validate(input : String) : Boolean{
+
+        tries--;
+        Log.w("MMMMMM", shortestRoutes[0].toString())
+        for (i in 0 until shortestRoutes.size) {
+            // Check if the input string is present in the current inner list
+            Log.w("MMMMMM", shortestRoutes[i].toString())
+            if (input in shortestRoutes[i]) {
+                progress++
+                return true // Input string is found in one of the inner lists
+            }
+        }
         return false
+    }
+    fun getTries(): Int{
+        return tries
+    }
+    fun gameEnd(){
+        if(tries == 0){
+            //go to stats page(lose)
+        }else if(progress == routeLen){
+            //go to stats page(win)
+        }
     }
     companion object{
         val DATASET = listOf(

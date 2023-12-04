@@ -1,27 +1,55 @@
 package com.example.travelusa
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
+import org.w3c.dom.Text
+import java.io.InputStream
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var game : Game
     private lateinit var userInput : EditText
     private lateinit var confirm : Button
     private lateinit var adView : AdView
+    private lateinit var prompt : TextView
+    private lateinit var tries : TextView
+    private lateinit var map : ImageView
+    private lateinit var path : TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         userInput = findViewById(R.id.userInput)
         confirm = findViewById(R.id.confirm_button)
-        //game = Game()
+        prompt = findViewById(R.id.prompt)
+        tries = findViewById(R.id.tries)
+        map = findViewById(R.id.mapImageView)
+        path = findViewById(R.id.path)
+        game = Game()
+        prompt.text = "Today, I would like to go from ${game.getStart()} to ${game.getEnd()}"
+        tries.text = "Number of Attempts Left: ${game.getTries()}"
+        map.setColorFilter(PorterDuffColorFilter(ContextCompat.getColor(this, R.color.green), PorterDuff.Mode.SRC_IN))
+        map.invalidate()
         createAd()
     }
     fun createAd(){
@@ -60,8 +88,26 @@ class MainActivity : AppCompatActivity() {
         }
         super.onDestroy()
     }
-    fun validateInput(){
-        var input : String = userInput.toString()
-        game.validate(input)
+    fun processInput(valid : Boolean, input : String){
+        val spannableStringBuilder = SpannableStringBuilder(path.text)
+        val res = "${10-game.getTries()}. $input "
+        spannableStringBuilder.append(res)
+        val colorSpan = if (valid) {
+            ForegroundColorSpan(Color.GREEN)
+        } else {
+            ForegroundColorSpan(Color.RED)
+        }
+        spannableStringBuilder.setSpan(colorSpan, spannableStringBuilder.length - res.length, spannableStringBuilder.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        path.text = spannableStringBuilder
+    }
+    fun validateInput(v: View){
+        if(userInput.text.toString().matches(Regex("^[A-Z]{2}$"))){
+            var input : String = userInput.text.toString()
+            var valid : Boolean = game.validate(input)
+            tries.text = "Number of Tries Left: ${game.getTries()}"
+            processInput(valid, input)
+        }else{
+            Toast.makeText(this, "Incorrect format, please enter two uppercase letters", Toast.LENGTH_LONG).show()
+        }
     }
 }

@@ -6,40 +6,61 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:background="@color/bg">
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:id="@+id/prompt"
+        android:textColor="@color/text"
+        android:textSize="20sp"
+        android:textAlignment="center"
+        android:text="Today I would like to go from CA to MD"
+        android:fontFamily="@font/hind_reg"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_below="@+id/prompt"
+        android:id="@+id/tries"
+        android:textColor="@color/text"
+        android:textSize="20sp"
+        android:textAlignment="center"
+        android:text="Number of tries left: 10"
+        android:fontFamily="@font/hind_reg"
+        />
     <ImageView
         android:id="@+id/mapImageView"
         android:layout_width="wrap_content"
-        android:layout_height="350dp"
+        android:layout_marginTop="60dp"
+        android:layout_height="300dp"
         app:srcCompat="@drawable/blank_us_map_48states" />
 
         <EditText
             android:layout_width="300dp"
             android:layout_height="50dp"
-            android:layout_marginLeft="5dp"
             android:id="@+id/userInput"
-            android:hint="Enter State Name Here"
+            android:hint="Enter State Name Here e.g.('MD')"
             android:layout_below="@+id/mapImageView"
             android:background="@drawable/textbox"
 
         />
 
-
         <Button
-            android:layout_width="100dp"
+            android:layout_width="110dp"
             android:layout_height="50dp"
-            android:layout_marginLeft="5dp"
             android:layout_below="@+id/mapImageView"
             android:layout_toRightOf="@+id/userInput"
             android:id="@+id/confirm_button"
             android:backgroundTint="@color/dull_green"
             android:onClick="validateInput"
             android:text="Confirm"
+            android:textSize="10sp"
+            android:textAlignment="center"
             />
 
     <TextView
+        android:layout_below="@+id/userInput"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="100dp"
         android:id="@+id/path"/>
     <LinearLayout
         android:id="@+id/ad_view"

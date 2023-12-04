@@ -44,5 +44,6 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     implementation("com.google.android.gms:play-services-ads:22.5.0")
+    implementation ("androidx.vectordrawable:vectordrawable:1.1.0")
 
 }
