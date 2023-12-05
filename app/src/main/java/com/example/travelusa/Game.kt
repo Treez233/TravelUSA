@@ -1,5 +1,8 @@
 package com.example.travelusa
 
+import android.content.Context
+import android.content.SharedPreferences
+import android.media.MediaRouter.UserRouteInfo
 import android.util.Log
 import java.util.LinkedList
 import kotlin.random.Random
@@ -11,11 +14,13 @@ class Game {
     private lateinit var adjacencyMatrix: Array<BooleanArray>
     private lateinit var shortestRoutes : List<List<String>>
     private var tries : Int = 10
-    private var progress = 0;
-    private var routeLen = 0;
+    private var progress : Int = 0;
+    private var routeLen : Int = 0;
+    private var currStreak : Int = 0;
+    private var bestStreak : Int = 0;
+    private var win : Boolean = false;
     constructor(){
         createAdj()
-        generateTwoStates()
     }
     private fun createAdj(){
         states = mutableListOf()
@@ -52,6 +57,9 @@ class Game {
             }
             println()
         }*/
+
+    }
+    fun startGame(){
         val (startState, endState) = generateTwoStates()
         this.startState = startState
         this.endState = endState
@@ -65,6 +73,7 @@ class Game {
             println("No route found from ${startState} to ${endState}.")
         }
     }
+
     fun generateTwoStates() : Pair<String, String>{
         var random = Random.Default
         var randomS = random.nextInt(0,48)
@@ -178,14 +187,14 @@ class Game {
         return endState
     }
     fun validate(input : String) : Boolean{
-
         tries--;
-        Log.w("MMMMMM", shortestRoutes[0].toString())
+        //Log.w("MMMMMM", shortestRoutes[0].toString())
         for (i in 0 until shortestRoutes.size) {
             // Check if the input string is present in the current inner list
-            Log.w("MMMMMM", shortestRoutes[i].toString())
+            //Log.w("MMMMMM", shortestRoutes[i].toString())
             if (input in shortestRoutes[i]) {
                 progress++
+
                 return true // Input string is found in one of the inner lists
             }
         }
@@ -194,15 +203,38 @@ class Game {
     fun getTries(): Int{
         return tries
     }
+    fun getWin() : Boolean{
+        return win
+    }
+    fun getRouteLen() : Int{
+        return routeLen
+    }
+    fun getCurrStreak() : Int{
+        return currStreak
+    }
+    fun getBestStreak(): Int{
+        return bestStreak
+    }
     fun gameEnd(){
-        if(tries == 0){
-            //go to stats page(lose)
+        if(tries == 0 && progress != routeLen){
+            currStreak = 0
+            win = false
         }else if(progress == routeLen){
-            //go to stats page(win)
+            currStreak++
+            win = true
+        }
+        if(bestStreak < currStreak){
+            bestStreak = currStreak
         }
     }
+    fun setPref(context: Context){
+        var pref : SharedPreferences = context.getSharedPreferences(context.packageName + "_preferences", Context.MODE_PRIVATE)
+        var editor : SharedPreferences.Editor = pref.edit()
+        editor.putInt(STREAK, bestStreak)
+        editor.commit()
+    }
     companion object{
-        val DATASET = listOf(
+        private val DATASET = listOf(
             "AL FL GA TN MS", "AZ NM UT NV CA", "AR LA MS TN MO OK TX",
             "CA AZ NV OR", "CO NM OK KS NE WY UT", "CT RI MA NY",
             "DE NJ PA MD", "DC MD VA", "FL GA AL", "GA SC NC TN AL FL",
@@ -219,5 +251,7 @@ class Game {
             "TX LA AR OK NM", "UT AZ CO WY ID NV", "VT NY MA NH", "VA MD DC WV KY TN NC", "WA OR ID", "WV VA MD PA OH KY",
             "WI MN IA IL MI", "WY CO NE SD MT ID UT"
         )
+        private const val STREAK: String = "STREAK"
+
     }
 }

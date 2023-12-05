@@ -1,5 +1,6 @@
 package com.example.travelusa
 
+import android.app.ActivityOptions
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
@@ -27,7 +28,6 @@ import java.io.InputStream
 
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var game : Game
     private lateinit var userInput : EditText
     private lateinit var confirm : Button
     private lateinit var adView : AdView
@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tries : TextView
     private lateinit var map : ImageView
     private lateinit var path : TextView
+    private var sessionProgress : Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +47,7 @@ class MainActivity : AppCompatActivity() {
         map = findViewById(R.id.mapImageView)
         path = findViewById(R.id.path)
         game = Game()
+        game.startGame()
         prompt.text = "Today, I would like to go from ${game.getStart()} to ${game.getEnd()}"
         tries.text = "Number of Attempts Left: ${game.getTries()}"
         map.setColorFilter(PorterDuffColorFilter(ContextCompat.getColor(this, R.color.green), PorterDuff.Mode.SRC_IN))
@@ -81,6 +83,7 @@ class MainActivity : AppCompatActivity() {
         if (adView != null){
             adView.resume()
         }
+        game
     }
     override fun onDestroy() {
         if (adView != null){
@@ -109,5 +112,14 @@ class MainActivity : AppCompatActivity() {
         }else{
             Toast.makeText(this, "Incorrect format, please enter two uppercase letters", Toast.LENGTH_LONG).show()
         }
+        if(sessionProgress == game.getRouteLen() || game.getTries() == 0){
+            game.gameEnd()
+            game.setPref(this@MainActivity)
+            var intent : Intent = Intent(this, StatActivity::class.java)
+            startActivity( intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
+        }
+    }
+    companion object {
+        lateinit var game : Game
     }
 }

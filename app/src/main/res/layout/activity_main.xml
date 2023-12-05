@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:background="@color/bg">
+    android:background="@color/bg"
+    android:id="@+id/mainLayout">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="30dp"
@@ -41,7 +42,6 @@
             android:hint="Enter State Name Here e.g.('MD')"
             android:layout_below="@+id/mapImageView"
             android:background="@drawable/textbox"
-
         />
 
         <Button
@@ -62,6 +62,15 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:id="@+id/path"/>
+    <TextView
+        android:layout_below="@+id/path"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:textSize="30sp"
+        android:textColor="@color/text"
+        android:textAlignment="center"
+        android:id ="@+id/stats"/>
+
     <LinearLayout
         android:id="@+id/ad_view"
         android:orientation="horizontal"

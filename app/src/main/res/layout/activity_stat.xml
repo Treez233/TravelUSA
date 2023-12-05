@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg">
+    <TextView
+        android:layout_marginTop="50sp"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:textColor="@color/text"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        android:id ="@+id/stats"/>
+
+    <TextView
+        android:id="@+id/playagain"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@+id/stats"
+        android:layout_marginTop="50dp"
+        android:textSize="30sp"
+        android:textAlignment="center"
+        android:text="@string/playagain"
+        android:textColor="@color/text"/>
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="70dp"
+        android:layout_below="@+id/playagain"
+        android:layout_marginLeft="40dp"
+        android:id="@+id/yes"
+        android:backgroundTint="@color/dull_green"
+        android:text="@string/yes"/>
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="70dp"
+        android:layout_marginLeft="30dp"
+        android:layout_below="@+id/playagain"
+        android:id="@+id/no"
+        android:layout_toRightOf="@+id/yes"
+        android:backgroundTint="@color/dull_green"
+        android:text="@string/no"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp"
+        android:textSize="20sp"
+        android:layout_below="@+id/yes"
+        android:textColor="@color/text"
+        android:textAlignment="center"
+        android:text="@string/rate"/>
+    <RatingBar
+        android:layout_marginTop="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/yes"
+        android:id="@+id/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        android:stepSize="1.0" />
+</RelativeLayout>

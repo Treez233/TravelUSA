@@ -2,4 +2,8 @@
     <string name="app_name">Travel USA</string>
     <string name="startButton">Start</string>
     <string name="closeButton">Close</string>
+    <string name="playagain">Play Again?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="rate">How would you rate your experience?</string>
 </resources>
