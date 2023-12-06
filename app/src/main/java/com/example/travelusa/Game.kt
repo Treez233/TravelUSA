@@ -13,6 +13,7 @@ class Game {
     private lateinit var states : MutableList<String>
     private lateinit var adjacencyMatrix: Array<BooleanArray>
     private lateinit var shortestRoutes : List<List<String>>
+    private var statesGuessed : ArrayList<String> = ArrayList<String>()
     private var tries : Int = 10
     private var progress : Int = 0;
     private var routeLen : Int = 0;
@@ -253,5 +254,15 @@ class Game {
         )
         private const val STREAK: String = "STREAK"
 
+    }
+
+    // returns true if state has not already been guessed, false otherwise
+    fun addGuess(str : String) : Boolean {
+        if (!statesGuessed.contains(str)) {
+            statesGuessed.add(str)
+            return true
+        }
+
+        return false
     }
 }

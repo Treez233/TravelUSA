@@ -7,6 +7,7 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
@@ -103,13 +104,19 @@ class MainActivity : AppCompatActivity() {
         path.text = spannableStringBuilder
     }
     fun validateInput(v: View){
-        if(userInput.text.toString().matches(Regex("^[A-Z]{2}$"))){
-            var input : String = userInput.text.toString()
-            var valid : Boolean = game.validate(input)
-            tries.text = "Number of Tries Left: ${game.getTries()}"
-            processInput(valid, input)
+        if(userInput.text.toString().matches(Regex("^[A-Za-z]{2}$"))){
+            var input : String = userInput.text.toString().uppercase()
+            // checking if this state has already been guessed
+            if (game.addGuess(input)) {
+                var valid : Boolean = game.validate(input)
+                tries.text = "Number of Tries Left: ${game.getTries()}"
+                processInput(valid, input)
+                userInput.text = SpannableStringBuilder("")
+            } else {
+                Toast.makeText(this, "State already guessed, please enter a different state", Toast.LENGTH_LONG).show()
+            }
         }else{
-            Toast.makeText(this, "Incorrect format, please enter two uppercase letters", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Incorrect format, please enter two letters", Toast.LENGTH_LONG).show()
         }
         if(sessionProgress == game.getRouteLen() || game.getTries() == 0){
             game.gameEnd()
