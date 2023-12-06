@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
         game = Game()
         game.startGame()
         prompt.text = "Today, I would like to go from ${game.getStart()} to ${game.getEnd()}"
-        tries.text = "Number of Attempts Left: ${game.getTries()}"
+        tries.text = "Number of Attempts Left: ${game.getTries()}"//need to change to progress bar
         map.setColorFilter(PorterDuffColorFilter(ContextCompat.getColor(this, R.color.green), PorterDuff.Mode.SRC_IN))
         map.invalidate()
         createAd()
@@ -59,14 +59,13 @@ class MainActivity : AppCompatActivity() {
         var adSize : AdSize = AdSize(AdSize.FULL_WIDTH, AdSize.AUTO_HEIGHT)
         adView.setAdSize(adSize)
 
-        var adUnitId : String = "ca-app-pub-3940256099942544~3347511713" // "ca-app-pub-2833810717312999/5760072379"
+        var adUnitId : String = "ca-app-pub-3940256099942544/6300978111" // "ca-app-pub-2833810717312999/5760072379"
         adView.adUnitId = adUnitId
 
         var builder : AdRequest.Builder = AdRequest.Builder()
-        builder.addKeyword("fitness").addKeyword("workout")
         var request : AdRequest = builder.build()
 
-        var layout : LinearLayout = findViewById(R.id.ad_view)
+        var layout : AdView = findViewById(R.id.ad_view)
         layout.addView(adView)
 
         adView.loadAd(request)
