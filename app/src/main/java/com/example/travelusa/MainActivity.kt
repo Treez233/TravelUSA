@@ -17,6 +17,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -36,7 +37,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tries : TextView
     private lateinit var map : ImageView
     private lateinit var path : TextView
-    private var sessionProgress : Int = 0
+    private lateinit var progressBar : ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,10 +48,12 @@ class MainActivity : AppCompatActivity() {
         tries = findViewById(R.id.tries)
         map = findViewById(R.id.mapImageView)
         path = findViewById(R.id.path)
+        progressBar = findViewById(R.id.progress_bar)
         game = Game()
         game.startGame()
         prompt.text = "Today, I would like to go from ${game.getStart()} to ${game.getEnd()}"
         tries.text = "Number of Attempts Left: ${game.getTries()}"//need to change to progress bar
+        progressBar.max = game.getRouteLen()
         map.setColorFilter(PorterDuffColorFilter(ContextCompat.getColor(this, R.color.green), PorterDuff.Mode.SRC_IN))
         map.invalidate()
         createAd()
@@ -102,10 +105,29 @@ class MainActivity : AppCompatActivity() {
         }
         spannableStringBuilder.setSpan(colorSpan, spannableStringBuilder.length - res.length, spannableStringBuilder.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         path.text = spannableStringBuilder
+
+        // update progress bar if valid
+        if (valid) {
+            progressBar.progress += 1
+        }
     }
     fun validateInput(v: View){
-        if(userInput.text.toString().matches(Regex("^[A-Za-z]{2}$"))){
-            var input : String = userInput.text.toString().uppercase()
+        // capitalizing input and removing leading/trailing whitespace
+        var input : String = userInput.text.toString().uppercase().trim()
+        var properInput : Boolean = false
+
+        // checking if this input is a valid state (either full name or 2 letter abbreviation)
+        if (game.stateAbbreviations.contains(input)) {
+            properInput = true
+        }
+        if (game.contiguousStates.contains(input)) {
+            properInput = true
+            var idx : Int = game.contiguousStates.indexOf(input)
+            // converting valid full state name to 2 letter abbreviation
+            input = game.stateAbbreviations.get(idx)
+        }
+
+        if(properInput){
             // checking if this state has already been guessed
             if (game.addGuess(input)) {
                 var valid : Boolean = game.validate(input)
@@ -116,9 +138,9 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "State already guessed, please enter a different state", Toast.LENGTH_LONG).show()
             }
         }else{
-            Toast.makeText(this, "Incorrect format, please enter two letters", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Please enter valid state name or 2-letter abbreviation", Toast.LENGTH_LONG).show()
         }
-        if(sessionProgress == game.getRouteLen() || game.getTries() == 0){
+        if(game.getProgress() == game.getRouteLen() || game.getTries() == 0){
             game.gameEnd()
             game.setPref(this@MainActivity)
             var intent : Intent = Intent(this, StatActivity::class.java)

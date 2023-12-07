@@ -39,7 +39,7 @@
             android:layout_width="300dp"
             android:layout_height="50dp"
             android:id="@+id/userInput"
-            android:hint="Enter State Name Here e.g.('MD')"
+            android:hint="Enter state e.g.('MD' or 'Maryland')"
             android:layout_below="@+id/mapImageView"
             android:background="@drawable/textbox"
         />
@@ -62,14 +62,27 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:id="@+id/path"/>
+    <ProgressBar
+        android:layout_below="@id/path"
+        android:layout_centerHorizontal="true"
+        android:layout_width="300dp"
+        android:layout_height="20dp"
+        android:indeterminate="false"
+        android:progress="0"
+        android:progressTint="@color/text"
+        android:progressBackgroundTint="@color/white"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:id="@+id/progress_bar"
+        />
     <TextView
-        android:layout_below="@+id/path"
+        android:layout_below="@+id/progress_bar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:textSize="30sp"
+        android:textSize="20sp"
         android:textColor="@color/text"
         android:textAlignment="center"
-        android:id ="@+id/stats"/>
+        android:text="progress"
+        android:id ="@+id/progress"/>
 
     <com.google.android.gms.ads.AdView
         xmlns:ads="http://schemas.android.com/apk/res-auto"

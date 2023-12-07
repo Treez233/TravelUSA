@@ -20,6 +20,29 @@ class Game {
     private var currStreak : Int = 0;
     private var bestStreak : Int = 0;
     private var win : Boolean = false;
+
+    val contiguousStates = arrayOf(
+        "ALABAMA", "ARIZONA", "ARKANSAS", "CALIFORNIA", "COLORADO", "CONNECTICUT",
+        "DELAWARE", "FLORIDA", "GEORGIA", "IDAHO", "ILLINOIS", "INDIANA", "IOWA",
+        "KANSAS", "KENTUCKY", "LOUISIANA", "MAINE", "MARYLAND", "MASSACHUSETTS",
+        "MICHIGAN", "MINNESOTA", "MISSISSIPPI", "MISSOURI", "MONTANA", "NEBRASKA",
+        "NEVADA", "NEW HAMPSHIRE", "NEW JERSEY", "NEW MEXICO", "NEW YORK",
+        "NORTH CAROLINA", "NORTH DAKOTA", "OHIO", "OKLAHOMA", "OREGON",
+        "PENNSYLVANIA", "RHODE ISLAND", "SOUTH CAROLINA", "SOUTH DAKOTA", "TENNESSEE",
+        "TEXAS", "UTAH", "VERMONT", "VIRGINIA", "WASHINGTON", "WEST VIRGINIA", "WISCONSIN", "WYOMING"
+    )
+
+    val stateAbbreviations = arrayOf(
+        "AL", "AZ", "AR", "CA", "CO", "CT",
+        "DE", "FL", "GA", "ID", "IL", "IN", "IA",
+        "KS", "KY", "LA", "ME", "MD", "MA",
+        "MI", "MN", "MS", "MO", "MT", "NE",
+        "NV", "NH", "NJ", "NM", "NY",
+        "NC", "ND", "OH", "OK", "OR",
+        "PA", "RI", "SC", "SD", "TN",
+        "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"
+    )
+
     constructor(){
         createAdj()
     }
@@ -82,26 +105,6 @@ class Game {
         while (randomS == randomE)
             randomE = random.nextInt(0,48)
 
-        /*val contiguousStates = listOf(
-            "Alabama", "Arizona", "Arkansas", "California", "Colorado", "Connecticut",
-            "Delaware", "Florida", "Georgia", "Idaho", "Illinois", "Indiana", "Iowa",
-            "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts",
-            "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska",
-            "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York",
-            "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon",
-            "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee",
-            "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"
-        )*/
-        val stateAbbreviations = arrayOf(
-            "AL", "AZ", "AR", "CA", "CO", "CT",
-            "DE", "FL", "GA", "ID", "IL", "IN", "IA",
-            "KS", "KY", "LA", "ME", "MD", "MA",
-            "MI", "MN", "MS", "MO", "MT", "NE",
-            "NV", "NH", "NJ", "NM", "NY",
-            "NC", "ND", "OH", "OK", "OR",
-            "PA", "RI", "SC", "SD", "TN",
-            "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"
-        )
         // Mapping of states to numbers from 0 to 47
         val indexToStateMap: Map<Int, String> = stateAbbreviations.withIndex().associate { it.index to it.value }
         val stateName1 = indexToStateMap[randomS] ?: "State not found"
@@ -187,6 +190,11 @@ class Game {
     fun getEnd() : String{
         return endState
     }
+
+    fun getProgress() : Int {
+        return progress
+    }
+
     fun validate(input : String) : Boolean{
         tries--;
         //Log.w("MMMMMM", shortestRoutes[0].toString())
