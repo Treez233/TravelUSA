@@ -5,28 +5,23 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
+import android.text.Html
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
-import org.w3c.dom.Text
-import java.io.InputStream
 
 
 class MainActivity : AppCompatActivity() {
@@ -49,10 +44,12 @@ class MainActivity : AppCompatActivity() {
         map = findViewById(R.id.mapImageView)
         path = findViewById(R.id.path)
         progressBar = findViewById(R.id.progress_bar)
-        game = Game()
+        game = Game(this@MainActivity)
         game.startGame()
-        prompt.text = "Today, I would like to go from ${game.getStart()} to ${game.getEnd()}"
-        tries.text = "Number of Attempts Left: ${game.getTries()}"//need to change to progress bar
+        var str1 : String = getColoredSpanned(game.getStart(), "#ADD8E6")
+        var str2 : String = getColoredSpanned(game.getEnd(), "#FFB6C1")
+        prompt.text = Html.fromHtml("Today, I would like to go from " + str1 + " to " + str2, 0, null, null)
+        tries.text = "Number of Attempts Left: ${game.getTries()}"
         progressBar.max = game.getRouteLen()
         map.setColorFilter(PorterDuffColorFilter(ContextCompat.getColor(this, R.color.green), PorterDuff.Mode.SRC_IN))
         map.invalidate()
@@ -86,7 +83,14 @@ class MainActivity : AppCompatActivity() {
         if (adView != null){
             adView.resume()
         }
-        game
+
+        var str1 : String = getColoredSpanned(game.getStart(), "#ADD8E6")
+        var str2 : String = getColoredSpanned(game.getEnd(), "#FFB6C1")
+        prompt.text = Html.fromHtml("Today, I would like to go from " + str1 + " to " + str2, 0, null, null)
+        tries.text = "Number of Attempts Left: ${game.getTries()}"
+        path.text = ""
+        progressBar.max = game.getRouteLen()
+        progressBar.progress = 0
     }
     override fun onDestroy() {
         if (adView != null){
@@ -146,6 +150,10 @@ class MainActivity : AppCompatActivity() {
             var intent : Intent = Intent(this, StatActivity::class.java)
             startActivity( intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
         }
+    }
+
+    private fun getColoredSpanned(text: String, color: String): String {
+        return "<font color=$color>$text</font>"
     }
     companion object {
         lateinit var game : Game

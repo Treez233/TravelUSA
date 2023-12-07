@@ -21,6 +21,14 @@ class Game {
     private var bestStreak : Int = 0;
     private var win : Boolean = false;
 
+    fun resetGame() : Unit {
+        statesGuessed = ArrayList<String>()
+        tries = 10
+        progress = 0
+        win = false
+        startGame()
+    }
+
     val contiguousStates = arrayOf(
         "ALABAMA", "ARIZONA", "ARKANSAS", "CALIFORNIA", "COLORADO", "CONNECTICUT",
         "DELAWARE", "FLORIDA", "GEORGIA", "IDAHO", "ILLINOIS", "INDIANA", "IOWA",
@@ -43,9 +51,13 @@ class Game {
         "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"
     )
 
-    constructor(){
+    constructor(context : Context){
         createAdj()
+
+        var pref : SharedPreferences = context.getSharedPreferences(context.packageName + "_preferences", Context.MODE_PRIVATE)
+        bestStreak = (pref.getInt(STREAK, 0))
     }
+
     private fun createAdj(){
         states = mutableListOf()
         for (str in DATASET){

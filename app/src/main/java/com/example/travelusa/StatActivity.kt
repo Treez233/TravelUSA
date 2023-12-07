@@ -34,7 +34,7 @@ class StatActivity : AppCompatActivity() {
         if(win){
             stats.text = "Congratulations! You have won!\n Your current streak is: ${MainActivity.game.getCurrStreak()} \n Your best streak is: ${MainActivity.game.getBestStreak()}"
         }else{
-            stats.text = "Better luck next time! Unfortunately, you have lost your streak\n Your best streak is: ${MainActivity.game.getBestStreak()}"
+            stats.text = "Better luck next time!\n Your current streak is: ${MainActivity.game.getCurrStreak()} \n Your best streak is: ${MainActivity.game.getBestStreak()}"
         }
     }
     inner class ButtonHandler : View.OnClickListener{
@@ -45,11 +45,11 @@ class StatActivity : AppCompatActivity() {
             }
         }
         private fun handleYes(){
-            MainActivity.game.startGame()
+            MainActivity.game.resetGame()
             finish()
         }
         private fun handleNo(){
-            finish()
+            finishAffinity()
         }
     }
 }
