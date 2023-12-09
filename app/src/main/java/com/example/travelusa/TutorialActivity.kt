@@ -19,9 +19,8 @@ class TutorialActivity : AppCompatActivity() {
         startButton = findViewById(R.id.startGame)
         tutorialTextBox = findViewById(R.id.info)
         updateView()
-
-
     }
+
     fun updateView(){
         tutorialTextBox.setTextSize(25.0f)
         tutorialTextBox.setTextColor(Color.WHITE)
@@ -31,6 +30,7 @@ class TutorialActivity : AppCompatActivity() {
                 "You will have 10 chances to determine the shortest path from the start state to the end state.\n" +
                 "You can begin by clicking the \"Start\" button when you are ready!\n"
     }
+
     fun startGame(v: View){
         var intent : Intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
