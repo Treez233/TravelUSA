@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <transitionManager xmlns:android="http://schemas.android.com/apk/res/android">
-
+    <slide
+        android:duration="3000"
+        android:slideEdge="top"
+        />
 </transitionManager>

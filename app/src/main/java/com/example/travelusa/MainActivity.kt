@@ -163,6 +163,7 @@ class MainActivity : AppCompatActivity() {
             game.gameEnd()
             game.setPref(this@MainActivity)
             var intent : Intent = Intent(this, StatActivity::class.java)
+
             startActivity( intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
         }
     }

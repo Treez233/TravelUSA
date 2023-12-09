@@ -4,6 +4,7 @@
         android:duration="3000"
         android:fadingMode="fade_in"
         />
+
     <slide
         android:duration="3000"
         android:slideEdge="top"

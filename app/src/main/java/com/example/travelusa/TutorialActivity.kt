@@ -33,8 +33,9 @@ class TutorialActivity : AppCompatActivity() {
 
     fun startGame(v: View){
         var intent : Intent = Intent(this, MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
+        // added an animation between tutorial and main activity
+        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
     }
 }
