@@ -29,6 +29,7 @@ class StatActivity : AppCompatActivity() {
             Toast.makeText(this, "Thank you for rating us $rating stars!", Toast.LENGTH_LONG).show()
         }
     }
+
     fun showStats(){
         var win = MainActivity.game.getWin()
         if(win){
@@ -37,6 +38,7 @@ class StatActivity : AppCompatActivity() {
             stats.text = "Better luck next time!\n Your current streak is: ${MainActivity.game.getCurrStreak()} \n Your best streak is: ${MainActivity.game.getBestStreak()}"
         }
     }
+
     inner class ButtonHandler : View.OnClickListener{
         override fun onClick(v: View?) {
             when(v?.id){
@@ -44,10 +46,12 @@ class StatActivity : AppCompatActivity() {
                 R.id.no -> handleNo()
             }
         }
+
         private fun handleYes(){
             MainActivity.game.resetGame()
             finish()
         }
+
         private fun handleNo(){
             finishAffinity()
         }

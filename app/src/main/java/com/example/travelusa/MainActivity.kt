@@ -10,6 +10,7 @@ import android.text.Html
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -23,7 +24,6 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 
-
 class MainActivity : AppCompatActivity() {
     private lateinit var userInput : EditText
     private lateinit var confirm : Button
@@ -36,6 +36,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // static variable to track the path
+
         setContentView(R.layout.activity_main)
         userInput = findViewById(R.id.userInput)
         confirm = findViewById(R.id.confirm_button)
@@ -55,12 +58,13 @@ class MainActivity : AppCompatActivity() {
         map.invalidate()
         createAd()
     }
+
     fun createAd(){
         adView = AdView(this)
         var adSize : AdSize = AdSize(AdSize.FULL_WIDTH, AdSize.AUTO_HEIGHT)
         adView.setAdSize(adSize)
 
-        var adUnitId : String = "ca-app-pub-3940256099942544/6300978111" // "ca-app-pub-2833810717312999/5760072379"
+        var adUnitId : String = "ca-app-pub-3940256099942544/6300978111"
         adView.adUnitId = adUnitId
 
         var builder : AdRequest.Builder = AdRequest.Builder()
@@ -71,6 +75,7 @@ class MainActivity : AppCompatActivity() {
 
         adView.loadAd(request)
     }
+
     override fun onPause(){
         if (adView != null){
             adView.pause()
@@ -92,21 +97,28 @@ class MainActivity : AppCompatActivity() {
         progressBar.max = game.getRouteLen()
         progressBar.progress = 0
     }
+
     override fun onDestroy() {
         if (adView != null){
             adView.destroy()
         }
         super.onDestroy()
     }
+
     fun processInput(valid : Boolean, input : String){
         val spannableStringBuilder = SpannableStringBuilder(path.text)
+
+        Log.w("MainActivity", "processInput(): $spannableStringBuilder")
+
         val res = "${10-game.getTries()}. $input "
+
         spannableStringBuilder.append(res)
         val colorSpan = if (valid) {
             ForegroundColorSpan(Color.GREEN)
         } else {
             ForegroundColorSpan(Color.RED)
         }
+
         spannableStringBuilder.setSpan(colorSpan, spannableStringBuilder.length - res.length, spannableStringBuilder.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         path.text = spannableStringBuilder
 
@@ -115,6 +127,7 @@ class MainActivity : AppCompatActivity() {
             progressBar.progress += 1
         }
     }
+
     fun validateInput(v: View){
         // capitalizing input and removing leading/trailing whitespace
         var input : String = userInput.text.toString().uppercase().trim()
@@ -124,6 +137,7 @@ class MainActivity : AppCompatActivity() {
         if (game.stateAbbreviations.contains(input)) {
             properInput = true
         }
+
         if (game.contiguousStates.contains(input)) {
             properInput = true
             var idx : Int = game.contiguousStates.indexOf(input)
@@ -141,9 +155,10 @@ class MainActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "State already guessed, please enter a different state", Toast.LENGTH_LONG).show()
             }
-        }else{
+        } else{
             Toast.makeText(this, "Please enter valid state name or 2-letter abbreviation", Toast.LENGTH_LONG).show()
         }
+
         if(game.getProgress() == game.getRouteLen() || game.getTries() == 0){
             game.gameEnd()
             game.setPref(this@MainActivity)
@@ -155,6 +170,7 @@ class MainActivity : AppCompatActivity() {
     private fun getColoredSpanned(text: String, color: String): String {
         return "<font color=$color>$text</font>"
     }
+
     companion object {
         lateinit var game : Game
     }
